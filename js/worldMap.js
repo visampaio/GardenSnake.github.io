@@ -64,8 +64,11 @@ function initMap() {
 
   ];
 
+   var infowindow = new google.maps.InfoWindow();
 
-    for (var i = 0; i < contributors.length; i++)
+
+    for (var i = 0; i < contributors.length; i++) {
+      var contentString = "not working yet";
         geocoder.geocode({
             "address": contributors[i].address
         }, function (results, status) {
@@ -75,17 +78,19 @@ function initMap() {
                     position: results[0].geometry.location
                 });
 
-                var contentString = 'Not yet implemented'
-
-                var infowindow = new google.maps.InfoWindow({
-                    content: contentString
-                });
-
-                marker.addListener('click', function() {
-                    infowindow.open(map, marker);
-                });
+                google.maps.event.addListener(marker, 'click', (function (marker, i) {
+                return function () {
+                    infowindow.setContent(contentString);
+                    infowindow.open(map, this);
+                  }
+                })(marker, i));
             }
         });
+
+
+
+
+    }
 
 
 
